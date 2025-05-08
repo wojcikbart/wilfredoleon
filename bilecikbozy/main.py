@@ -3,7 +3,6 @@ import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import selenium.webdriver.common.keys as Keys
 
 
 def oscamuj_zbiletow(url, normal_amount=1, relief_amount=1):
@@ -17,7 +16,6 @@ def oscamuj_zbiletow(url, normal_amount=1, relief_amount=1):
 
     driver = uc.Chrome()
     driver.get(url)
-    time.sleep(2)
 
     wait = WebDriverWait(driver, 15, poll_frequency=0.01)
 
@@ -49,6 +47,7 @@ def oscamuj_zbiletow(url, normal_amount=1, relief_amount=1):
                 break
 
         print(f"Zamawiam bratku {ticket_amount} biletów typu {ticket_title}")
+        button_test = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-qa="more-tickets"]')))
         more_tickets_button = ticket_type.find_element(By.CSS_SELECTOR, '[data-qa="more-tickets"]')
         for i in range(ticket_amount):
             if TICKET_COUNT >= MAX_TICKET_AMOUNT:
@@ -64,10 +63,11 @@ def oscamuj_zbiletow(url, normal_amount=1, relief_amount=1):
     time.sleep(2000)
     driver.quit()
 
-
-# driver.get("https://www.eventim.pl/artist/mks-lublin/")
-# driver.get("https://www.eventim.pl/artist/bogdanka-luk-lublin/")
-
 if __name__ == "__main__":
+
+    # url = "https://www.eventim.pl/artist/bogdanka-luk-lublin/"
     url = "https://www.eventim.pl/artist/mks-lublin/"
-    oscamuj_zbiletow(url)
+    normal_amount = 1
+    relief_amount = 1
+
+    oscamuj_zbiletow(url, normal_amount, relief_amount)
